@@ -2,10 +2,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour {
+    [SerializeField]
+    private Camera cam;
+
     private Vector3 velocity = Vector3.zero;
     Rigidbody rb;
 
     private Vector3 rotation = Vector3.zero;
+    private Vector3 cameraRotation = Vector3.zero;
 
     void Start()
     {
@@ -30,6 +34,11 @@ public class PlayerMotor : MonoBehaviour {
         rotation = _rotation;
     }
 
+    public void RotateCamera(Vector3 _cameraRotation)
+    {
+        cameraRotation = _cameraRotation;
+    }
+    
     private void PerformMovement()
     {
         if (velocity != Vector3.zero) {
@@ -40,5 +49,8 @@ public class PlayerMotor : MonoBehaviour {
     private void PerformRotation()
     {
         rb.MoveRotation(rb.rotation * Quaternion.Euler(rotation));
+        if (cam != null) {
+            cam.transform.Rotate(-cameraRotation);
+        }
     }
 }
